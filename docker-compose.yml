@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: antonio
+      POSTGRES_PASSWORD: antonio
+      POSTGRES_DB: antonio
+    ports:
+      - "15432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    env_file: .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    command: python -m app.main
+
+volumes:
+  postgres_data:
